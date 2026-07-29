@@ -12,7 +12,7 @@ class Barang extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        // Load model yang baru saja kita buat
+        // Load model
         $this->load->model('Barang_model');
     }
 
@@ -20,8 +20,8 @@ class Barang extends CI_Controller {
     public function index() {
         // Ambil data dari model
         $data['barang'] = $this->Barang_model->get_all();
-        // Tampilkan view 'v_barang' dengan membawa variabel $data
-        $this->load->view('v_barang', $data);
+        // Menampilkan view 'barang' dengan membawa variabel $data
+        $this->load->view('barang', $data);
     }
 
     // CREATE: Aksi saat form Tambah disubmit
