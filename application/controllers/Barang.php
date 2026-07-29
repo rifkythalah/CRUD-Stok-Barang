@@ -27,11 +27,16 @@ class Barang extends CI_Controller {
     // CREATE: Aksi saat form Tambah disubmit
     public function tambah_aksi() {
         // Validasi: kode barang wajib diisi dan harus unik di database
+		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'required|is_unique[barang.kode_barang]');$this->form_validation->set_message('is_unique', 'Kode barang sudah tersedia, buat kode baru.');
+        $this->form_validation->set_message('required', '%s wajib diisi.');
+        $this->form_validation->set_message('numeric', '%s harus berupa angka.');
+
         $this->form_validation->set_rules('kode_barang', 'Kode Barang', 'required|is_unique[tbl_barang.kode_barang]');
         $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required');
         $this->form_validation->set_rules('stok', 'Stok', 'required|numeric');
         $this->form_validation->set_rules('harga', 'Harga', 'required|numeric');
 
+		
         if ($this->form_validation->run() == FALSE) {
             // Jika validasi gagal, kirim pesan error
             $this->session->set_flashdata('error', validation_errors());
@@ -45,7 +50,7 @@ class Barang extends CI_Controller {
                 'harga'       => $this->input->post('harga')
             );
             $this->Barang_model->insert($data);
-            $this->session->set_flashdata('sukses', 'Data berhasil ditambahkan!');
+           $this->session->set_flashdata('sukses', 'Data berhasil ditambahkan.');
         }
         redirect('barang');
     }
@@ -62,7 +67,7 @@ class Barang extends CI_Controller {
         );
 
         $this->Barang_model->update($id, $data);
-        $this->session->set_flashdata('sukses', 'Data berhasil diubah!');
+        $this->session->set_flashdata('sukses', 'Data berhasil diubah.');
         
         redirect('barang');
     }
@@ -70,7 +75,7 @@ class Barang extends CI_Controller {
     // DELETE: Aksi saat tombol Hapus diklik
     public function hapus($id) {
         $this->Barang_model->delete($id);
-        $this->session->set_flashdata('sukses', 'Data berhasil dihapus!');
+        $this->session->set_flashdata('sukses', 'Data berhasil dihapus');
         redirect('barang');
     }
 }

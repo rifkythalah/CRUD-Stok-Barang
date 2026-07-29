@@ -1,3 +1,4 @@
+<?php /** @var array $barang */ ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -13,7 +14,24 @@
 
 <body class="bg-light">
 
-    <div class="container mt-5 mb-5">
+    <div class="container mt-4 mb-5">
+
+        <!-- ALERT-->
+        <?php if($this->session->flashdata('sukses')): ?>
+        <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+            <strong>Sukses!</strong> <?= $this->session->flashdata('sukses') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+
+        <?php if($this->session->flashdata('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+            <strong>Perhatian!</strong> <?= $this->session->flashdata('error') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+
+        <!-- Kartu Utama Tabel Data -->
         <div class="card shadow">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Data Stok Barang</h4>
@@ -22,25 +40,9 @@
                 </button>
             </div>
             <div class="card-body">
-
-                <!-- Menampilkan Flashdata (Pesan Sukses/Error) -->
-                <?php if($this->session->flashdata('sukses')): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= $this->session->flashdata('sukses') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <?php endif; ?>
-
-                <?php if($this->session->flashdata('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= $this->session->flashdata('error') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <?php endif; ?>
-
                 <!-- Tabel Data -->
                 <div class="table-responsive">
-                    <table id="tabel-barang" class="table table-bordered table-striped table-hover">
+                    <table id="tabel-barang" class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-dark">
                             <tr>
                                 <th width="5%">No</th>
@@ -84,7 +86,7 @@
         </div>
     </div>
 
-    <!-- MODAL TAMBAH BARANG  -->
+    <!-- MODAL TAMBAH BARANG          -->
     <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -97,11 +99,13 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Kode Barang</label>
-                            <input type="text" name="kode_barang" class="form-control" required>
+                            <input type="text" name="kode_barang" class="form-control" placeholder="Contoh: BRG-001"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama Barang</label>
-                            <input type="text" name="nama_barang" class="form-control" required>
+                            <input type="text" name="nama_barang" class="form-control" placeholder="Nama barang"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
@@ -116,11 +120,11 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label class="form-label">Stok</label>
-                                <input type="number" name="stok" class="form-control" required>
+                                <input type="number" name="stok" class="form-control" placeholder="0" required>
                             </div>
                             <div class="col">
                                 <label class="form-label">Harga Satuan</label>
-                                <input type="number" name="harga" class="form-control" required>
+                                <input type="number" name="harga" class="form-control" placeholder="0" required>
                             </div>
                         </div>
                     </div>
@@ -133,7 +137,7 @@
         </div>
     </div>
 
-    <!-- MODAL EDIT BARANG -->
+    <!-- MODAL EDIT BARANG     -->
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -148,7 +152,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Kode Barang</label>
-                            <!-- Kode barang diset readonly agar tidak bisa diubah saat edit -->
+                            <!-- Readonly agar kode tidak diubah saat edit -->
                             <input type="text" name="kode_barang" id="edit_kode" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
@@ -184,7 +188,7 @@
         </div>
     </div>
 
-    <!-- jQuery (untuk DataTables) -->
+    <!-- jQuery (Wajib untuk DataTables) -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -192,33 +196,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- Script Inisialisasi DataTables & Modal Edit -->
-    <script>
-    $(document).ready(function() {
-        // 1. Mengaktifkan DataTables
-        $('#tabel-barang').DataTable();
-
-        // 2. Mengisi data ke Modal Edit saat tombol Edit diklik
-        $('.btn-edit').on('click', function() {
-            // Ambil data dari atribut data-* pada tombol yang diklik
-            const id = $(this).data('id');
-            const kode = $(this).data('kode');
-            const nama = $(this).data('nama');
-            const kategori = $(this).data('kategori');
-            const stok = $(this).data('stok');
-            const harga = $(this).data('harga');
-
-            // Masukkan data tersebut ke dalam input di form Modal Edit
-            $('#edit_id').val(id);
-            $('#edit_kode').val(kode);
-            $('#edit_nama').val(nama);
-            $('#edit_kategori').val(kategori);
-            $('#edit_stok').val(stok);
-            $('#edit_harga').val(harga);
-        });
-    });
-    </script>
-
+    <script src="<?= base_url('assets/js/script.js') ?>"></script>
 </body>
 
 </html>
