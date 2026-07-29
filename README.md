@@ -24,7 +24,7 @@ Aplikasi **CRUD Stok Barang** merupakan solusi pengolahan data barang yang memun
 
 ---
 
-## 🗄️ Struktur Database
+## Struktur Database
 
 **Nama Database:** `db_inventaris`  
 **Nama Tabel:** `tbl_barang`
@@ -41,7 +41,7 @@ Aplikasi **CRUD Stok Barang** merupakan solusi pengolahan data barang yang memun
 
 ---
 
-## 🚀 Cara Menjalankan Project (Local Setup)
+## Cara Menjalankan Project (Local Setup)
 
 Berikut panduan langkah demi langkah untuk menjalankan project di lingkungan lokal menggunakan **Laragon**:
 
@@ -86,7 +86,7 @@ Berikut panduan langkah demi langkah untuk menjalankan project di lingkungan lok
 
 ---
 
-## 🧪 Panduan Pengujian (Testing Guide)
+## Panduan Pengujian (Testing Guide)
 
 
 ### 1. Pengujian Fitur Pencarian & Filter (DataTables)
